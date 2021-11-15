@@ -2,6 +2,7 @@
 
 const key = ' zsjvuKvkoPAV6FqCFxPBLSyVcghkq7xp';
 
+// get location information
 const getCity = async (city) => {
 
     const base = 'http://dataservice.accuweather.com/locations/v1/cities/search';
@@ -14,6 +15,22 @@ const getCity = async (city) => {
 
 };
 
+
+// get weather information
+const getWeather = async (id) => {
+
+    const base = 'http://dataservice.accuweather.com/currentconditions/v1/';
+    const query = `${id}?apikey=${key}`;
+
+    const response = await fetch (base+query);
+    const data = await response.json();
+
+    return data[0]
+};
+
+
 getCity('nairobi')
-.then(data => console.log(data))
-.catch(err => console.log('search again'));
+.then(data => {
+    return getWeather(data.Key)             
+}).then(data => console.log(data))
+.catch(err => console.log(err));
