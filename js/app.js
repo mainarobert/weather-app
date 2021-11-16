@@ -1,18 +1,51 @@
 // DOM manipulation
 const cityForm = document.querySelector('form');
+const card = document.querySelector('.card');
+const details = document.querySelector('.details');
+const time = document.querySelector('img.time');
+const icon = document.querySelector('.icon img');
+
+// updates the UI
+const updateUi = data => {
+    
+    console.log(data);
+    /*  const cityDetails = data.cityDetails;
+        const weather = data.weather;
+     */
+    // Destructure
+    const {cityDetails, weather} = data
+
+    details.innerHTML = `
+    <h5 class="my-3">${cityDetails.EnglishName}</h5>
+    <div class="my-3">${weather.WeatherText}</div>
+    <div class="display-4 my-4">
+      <span>${weather.Temperature.Metric.Value}</span>
+      <span>&deg;C</span>
+    </div>
+    `;
+
+    // remove d-none class if present Bootstrap card
+    if(card.classList.contains('d-none')) {
+        card.classList.remove('d-none')
+    };
+
+};
 
 // updateCity is asynchronous because it has getCity function which is async and will take some time to execute
 const updateCity = async (city) => {
 
-    const cityDets = await getCity(city);            // getCity first finishes before assigning its value to cityDetails
+    const cityDetails = await getCity(city);            // getCity first finishes before assigning its value to cityDetails
     const weather = await getWeather(cityDetails.Key);
 
-    return {
-        cityDetails : cityDets,
-        weather : weather
-    };
+    return {cityDetails, weather};           // object shorthand notation
 
+    /*  return {
+        cityDetails : cityDetails,
+        weather : weather
+    }; */
     // get city detail to print on console.log(city)
+
+
 };
 
 cityForm.addEventListener('submit', e => {
@@ -24,6 +57,6 @@ cityForm.addEventListener('submit', e => {
     cityForm.reset();                               // reset() clears the form
 
     updateCity(city)
-    .then(data => console.log(data))
+    .then(data => updateUi(data))
     .catch(err => console.log(err));
 });
