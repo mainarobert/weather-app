@@ -1,6 +1,6 @@
 // responsible for interacting with weather api 
 
-const key = ' zsjvuKvkoPAV6FqCFxPBLSyVcghkq7xp';
+const key = 'mYdTXerDCIXgPYtS6AK0oMSS7ZvYgop3';
 
 // get location information
 const getCity = async (city) => {
